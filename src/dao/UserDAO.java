@@ -79,8 +79,8 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -112,8 +112,8 @@ public class UserDAO {
             return listUser;
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
             return null;
         }
 
@@ -147,8 +147,8 @@ public class UserDAO {
                 result = updatedUser;
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -181,8 +181,8 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return user;
