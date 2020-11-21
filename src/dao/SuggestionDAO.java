@@ -43,14 +43,14 @@ public class SuggestionDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Suggestion> listAllSuggestion() {
+    public List<Suggestion> getSuggestions() {
         List<Suggestion> listSuggestion = new ArrayList<>();
 
         String sql = "SELECT * FROM suggestion";
@@ -72,8 +72,8 @@ public class SuggestionDAO {
             return listSuggestion;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -103,8 +103,8 @@ public class SuggestionDAO {
                 result = updatedSuggestion;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -131,8 +131,8 @@ public class SuggestionDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return suggestion;

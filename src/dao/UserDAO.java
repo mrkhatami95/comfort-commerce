@@ -20,6 +20,36 @@ import static dao.DAOManager.getConnection;
  */
 public class UserDAO {
 
+    public User findUserByUsername(String username) {
+        User result = null;
+        String sql = "SELECT * FROM shop.user WHERE username = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    long id = rs.getLong("id");
+                    String password = rs.getString("password");
+                    BigDecimal budget = rs.getBigDecimal("budget");
+                    long basketId = rs.getLong("basket_id");
+                    int statusId = rs.getInt("status_id");
+                    long addressId = rs.getLong("address_id");
+                    long roleId = rs.getLong("role_id");
+                    String phoneNumber = rs.getString("phone_number");
+
+                    result = new User(id, username, password, budget, basketId, statusId, addressId, roleId, phoneNumber);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return result;
+    }
+
     public User createUser(User newUser) {
         User result = null;
         String sql = "INSERT INTO shop.user (username, password, budget, basket_id, status_id, address_id, role_id, phone_number)"
@@ -49,14 +79,14 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<User> listAllUser() {
+    public List<User> getUsers() {
         List<User> listUser = new ArrayList<>();
 
         String sql = "SELECT * FROM user";
@@ -82,8 +112,8 @@ public class UserDAO {
             return listUser;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -117,8 +147,8 @@ public class UserDAO {
                 result = updatedUser;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -151,8 +181,8 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return user;

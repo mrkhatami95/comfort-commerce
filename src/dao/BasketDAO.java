@@ -42,14 +42,14 @@ public class BasketDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Basket> listAllBasket() {
+    public List<Basket> getBaskets() {
         List<Basket> listBasket = new ArrayList<>();
 
         String sql = "SELECT * FROM basket";
@@ -70,8 +70,8 @@ public class BasketDAO {
             return listBasket;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -100,8 +100,8 @@ public class BasketDAO {
                 result = updatedBasket;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -127,8 +127,8 @@ public class BasketDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return basket;

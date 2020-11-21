@@ -24,8 +24,8 @@ public class DAOManager {
 
             connection = DriverManager.getConnection(dbURL, username, password);
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
         return connection;
     }
@@ -39,8 +39,8 @@ public class DAOManager {
                 throw new SQLException("ID = " + id + " not found");
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
     }
 
