@@ -1,7 +1,9 @@
 package dao;
 
 import model.Product;
+import model.User;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +20,38 @@ import static dao.DAOManager.getConnection;
  * 11/20/20
  */
 public class ProductDAO {
+
+    public Product findProductByName(String name) {
+        Product result = null;
+        String sql = "SELECT * FROM shop.product WHERE name = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    long id = rs.getLong("id");
+                    String description = rs.getString("description");
+                    long price = rs.getLong("price");
+                    long colorId = rs.getLong("color_id");
+                    long discountId = rs.getLong("discount_id");
+                    long count = rs.getLong("count");
+                    long categoryId = rs.getLong("category_id");
+                    long commentId = rs.getLong("comment_id");
+
+                    result = new Product(id, name, description, price, colorId, discountId, count, categoryId, commentId);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return result;
+    }
+
 
     public Product createProduct(Product newProduct) {
         Product result = null;
@@ -47,8 +81,8 @@ public class ProductDAO {
             }
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -80,8 +114,8 @@ public class ProductDAO {
             return listProduct;
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
             return null;
         }
 
@@ -116,8 +150,8 @@ public class ProductDAO {
                 result = updatedProduct;
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -148,8 +182,8 @@ public class ProductDAO {
             }
 
         } catch (SQLException e) {
-            
-                System.err.println(e.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return product;
