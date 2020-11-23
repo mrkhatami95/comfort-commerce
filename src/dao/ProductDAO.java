@@ -47,14 +47,14 @@ public class ProductDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Product> listAllProduct() {
+    public List<Product> getProducts() {
         List<Product> listProduct = new ArrayList<>();
 
         String sql = "SELECT * FROM product";
@@ -80,8 +80,8 @@ public class ProductDAO {
             return listProduct;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -116,8 +116,8 @@ public class ProductDAO {
                 result = updatedProduct;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -148,8 +148,8 @@ public class ProductDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return product;

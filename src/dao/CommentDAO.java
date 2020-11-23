@@ -40,14 +40,14 @@ public class CommentDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Comment> listAllComment() {
+    public List<Comment> getComments() {
         List<Comment> listComment = new ArrayList<>();
 
         String sql = "SELECT * FROM comment";
@@ -66,8 +66,8 @@ public class CommentDAO {
             return listComment;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -94,8 +94,8 @@ public class CommentDAO {
                 result = updatedComment;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -119,8 +119,8 @@ public class CommentDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return comment;

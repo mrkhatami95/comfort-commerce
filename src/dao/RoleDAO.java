@@ -40,14 +40,14 @@ public class RoleDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Role> listAllRole() {
+    public List<Role> getRoles() {
         List<Role> listRole = new ArrayList<>();
 
         String sql = "SELECT * FROM role";
@@ -66,8 +66,8 @@ public class RoleDAO {
             return listRole;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -94,8 +94,8 @@ public class RoleDAO {
                 result = updatedRole;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -119,8 +119,8 @@ public class RoleDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return role;
