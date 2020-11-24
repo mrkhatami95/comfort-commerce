@@ -21,7 +21,7 @@ public class AddressDAO {
 
     public Address createAddress(Address newAddress) {
         Address result = null;
-        String sql = "INSERT INTO shop.address (address) VALUES(?)";
+        String sql = "INSERT INTO address (address) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

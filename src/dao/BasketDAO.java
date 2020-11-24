@@ -21,7 +21,7 @@ public class BasketDAO {
 
     public Basket createBasket(Basket newBasket) {
         Basket result = null;
-        String sql = "INSERT INTO shop.basket (product_id, user_id, count) VALUES(?,?,?)";
+        String sql = "INSERT INTO basket (product_id, user_id, count) VALUES(?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

@@ -1,20 +1,28 @@
-import dao.AddressDAO;
-import dao.DAOManager;
-import dao.UserDAO;
-import model.Address;
-import model.User;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import dao.ProductDAO;
+import model.Product;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
 
-        System.out.println("Welcome to Shop!");
-        System.out.println(Arrays.toString(Class.forName("model.User").getMethods()));
-        System.out.println(Long.TYPE);
+        System.out.println("Welcome to Shop");
+//        ProductDAO dao = new ProductDAO();
+//        System.out.println(dao.getProduct(1));
+
+
+        Product newProduct = new Product();
+        newProduct.setId(7);
+        newProduct.setName("laptop");
+        newProduct.setDescription("asus");
+        newProduct.setPrice(150_000_000);
+        newProduct.setColorId(12);
+        newProduct.setDiscountId(3);
+        newProduct.setCount(15);
+        newProduct.setCategoryId(222);
+        newProduct.setCommentId(341);
+
+        ProductDAO dao = new ProductDAO();
+        System.out.println(dao.updateProduct(newProduct));
+
     }
 }

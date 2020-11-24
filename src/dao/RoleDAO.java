@@ -21,7 +21,7 @@ public class RoleDAO {
 
     public Role createRole(Role newRole) {
         Role result = null;
-        String sql = "INSERT INTO shop.role (role_name) VALUES(?)";
+        String sql = "INSERT INTO role (role_name) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

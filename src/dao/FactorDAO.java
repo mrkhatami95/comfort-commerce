@@ -21,7 +21,7 @@ public class FactorDAO {
 
     public Factor createFactor(Factor newFactor) {
         Factor result = null;
-        String sql = "INSERT INTO shop.factor (basket_id, user_id, price, date, delivery) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO factor (basket_id, user_id, price, date, delivery) VALUES(?,?,?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

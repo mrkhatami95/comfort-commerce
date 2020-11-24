@@ -21,7 +21,7 @@ public class StatusDAO {
 
     public Status createStatus(Status newStatus) {
         Status result = null;
-        String sql = "INSERT INTO shop.status (status) VALUES(?)";
+        String sql = "INSERT INTO status (status) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
