@@ -15,6 +15,10 @@ public class Product {
     private long categoryId;
     private long commentId;
 
+    public Product() {
+
+    }
+
     public Product(long id, String name, String description, long price, long colorId, long discountId, long count, long categoryId, long commentId) {
         this.id = id;
         this.name = name;
@@ -26,6 +30,7 @@ public class Product {
         this.categoryId = categoryId;
         this.commentId = commentId;
     }
+
 
     public long getId() {
         return id;

@@ -11,8 +11,10 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
 
         System.out.println("Welcome to Shop!");
+        System.out.println(Arrays.toString(Class.forName("model.User").getMethods()));
+        System.out.println(Long.TYPE);
     }
 }

@@ -1,9 +1,7 @@
 package dao;
 
 import model.Product;
-import model.User;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,24 +28,29 @@ public class ProductDAO {
             ps.setString(1, name);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    long id = rs.getLong("id");
-                    String description = rs.getString("description");
-                    long price = rs.getLong("price");
-                    long colorId = rs.getLong("color_id");
-                    long discountId = rs.getLong("discount_id");
-                    long count = rs.getLong("count");
-                    long categoryId = rs.getLong("category_id");
-                    long commentId = rs.getLong("comment_id");
-
-                    result = new Product(id, name, description, price, colorId, discountId, count, categoryId, commentId);
-
-                }
+                if (rs.next())
+                    result = getProductFromResultSet(rs);
             }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
+        return result;
+    }
+
+    private Product getProductFromResultSet(ResultSet rs) throws SQLException {
+        Product result = new Product();
+
+        result.setId(rs.getLong("id"));
+        result.setName(rs.getString("name"));
+        result.setDescription(rs.getString("description"));
+        result.setPrice(rs.getLong("price"));
+        result.setColorId(rs.getLong("color_id"));
+        result.setDiscountId(rs.getLong("discount_id"));
+        result.setCount(rs.getLong("count"));
+        result.setCategoryId(rs.getLong("category_id"));
+        result.setCommentId(rs.getLong("comment_id"));
 
         return result;
     }
@@ -95,21 +98,10 @@ public class ProductDAO {
 
         try (Connection conn = getConnection();
              Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+             ResultSet rs = statement.executeQuery(sql)) {
 
-            while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String description = resultSet.getString("description");
-                long price = resultSet.getLong("price");
-                long colorId = resultSet.getLong("color_id");
-                long discountId = resultSet.getLong("discount_id");
-                long count = resultSet.getLong("count");
-                long categoryId = resultSet.getLong("category_id");
-                long commentId = resultSet.getLong("comment_id");
-
-                Product product = new Product(id, name, description, price, colorId, discountId, count, categoryId, commentId);
-                listProduct.add(product);
+            while (rs.next()) {
+                listProduct.add(getProductFromResultSet(rs));
             }
             return listProduct;
 
@@ -167,22 +159,12 @@ public class ProductDAO {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
 
-                if (rs.next()) {
-                    String name = rs.getString("name");
-                    String description = rs.getString("description");
-                    long price = rs.getLong("price");
-                    long colorId = rs.getLong("color_id");
-                    long discountId = rs.getLong("discount_id");
-                    long count = rs.getLong("count");
-                    long categoryId = rs.getLong("category_id");
-                    long commentId = rs.getLong("comment_id");
-                    product = new Product(id, name, description, price, colorId, discountId, count, categoryId, commentId);
-                }
+                if (rs.next())
+                    product = getProductFromResultSet(rs);
 
             }
 
         } catch (SQLException e) {
-
             System.err.println(e.getMessage());
         }
 

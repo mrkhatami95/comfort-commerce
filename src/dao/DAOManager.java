@@ -1,6 +1,8 @@
 package dao;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Map;
@@ -45,22 +47,31 @@ public class DAOManager {
         }
     }
 
-    public static Object getEntityFromResultSet(Object entity, ResultSet rs) throws SQLException {
-        // TODO: 11/21/20
-        // FIXME: 11/21/20
-
-        // ResultSet properties
-        int columnCount = rs.getMetaData().getColumnCount();
-        String columnName = rs.getMetaData().getColumnName(1);
-        int columnType = rs.getMetaData().getColumnType(1);
-        String columnTypeName = rs.getMetaData().getColumnTypeName(1);
+    public static Object getEntityFromResultSet(Object obj, ResultSet rs) throws SQLException {
+        // TODO: 11/21/20 change the name of table columns same as model fields.
+        // FIXME: 11/21/20 test the method, change all methods
+        // TODO: 11/24/20 write reverse method
 
 
-        // Model properties
-        System.out.println(entity.getClass().getDeclaredFields()[0].getType().getSimpleName());
-        System.out.println(entity.getClass().getDeclaredFields()[0].getName());
+        Class cl = obj.getClass();
+        try {
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                String fieldName = rs.getMetaData().getColumnName(i);
+                Field field = cl.getField(fieldName);
+                int fieldAccessModifier = field.getModifiers();
+                if (Modifier.isPrivate(fieldAccessModifier)) {
+                    field.setAccessible(true);
+                    field.set(obj, rs.getObject(i));
+                    field.setAccessible(false);
+                } else {
+                    field.set(obj, rs.getObject(i));
+                }
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
-        return null;
+        return obj;
     }
 
 
