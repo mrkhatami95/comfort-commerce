@@ -21,7 +21,7 @@ public class DiscountDAO {
 
     public Discount createDiscount(Discount newDiscount) {
         Discount result = null;
-        String sql = "INSERT INTO shop.discount (code, discount_value, is_used) VALUES(?,?,?)";
+        String sql = "INSERT INTO discount (code, discount_value, is_used) VALUES(?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

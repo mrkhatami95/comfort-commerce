@@ -21,7 +21,7 @@ public class ColorDAO {
 
     public Color createColor(Color newColor) {
         Color result = null;
-        String sql = "INSERT INTO shop.color (color) VALUES(?)";
+        String sql = "INSERT INTO color (color) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

@@ -21,7 +21,7 @@ public class SuggestionDAO {
 
     public Suggestion createSuggestion(Suggestion newSuggestion) {
         Suggestion result = null;
-        String sql = "INSERT INTO shop.suggestion (user_id, basket_id, factor_id, suggestion_category_id) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO suggestion (user_id, basket_id, factor_id, suggestion_category_id) VALUES(?,?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

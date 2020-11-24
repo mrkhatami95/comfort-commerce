@@ -21,7 +21,7 @@ public class CommentDAO {
 
     public Comment createComment(Comment newComment) {
         Comment result = null;
-        String sql = "INSERT INTO shop.comment (comment) VALUES(?)";
+        String sql = "INSERT INTO comment (comment) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

@@ -21,7 +21,7 @@ public class CategoryDAO {
 
     public Category createCategory(Category newCategory) {
         Category result = null;
-        String sql = "INSERT INTO shop.category (name, `desc`) VALUES(?,?)";
+        String sql = "INSERT INTO category (name, `desc`) VALUES(?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
