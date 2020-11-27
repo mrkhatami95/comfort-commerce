@@ -12,8 +12,8 @@ import static dao.DAOManager.*;
  */
 public class UserDAO {
 
-    public User findUserByUsername(String username) {
-        return getEntity("user", "username", username, new User());
+    public List<User> findUserByUsername(String username) {
+        return getEntitiesByField("username", username, User.class);
     }
 
     public User createUser(User newUser) {
@@ -21,21 +21,18 @@ public class UserDAO {
     }
 
     public List<User> getUsers() {
-        return getListOfEntities("user", new User());
+        return getAllEntities(User.class);
     }
 
     public void deleteUser(long id) {
-        String sql = "DELETE FROM user where id = ?";
-
-        // TODO: 11/24/20 Make it more general for all fields
-        delete(id, sql);
+        deleteByField(User.class, "id", id);
     }
 
     public User updateUser(User updatedUser) {
         return updateEntity(updatedUser);
     }
 
-    public User getUser(long id) {
-        return getEntity("product", "id", id, new User());
+    public List<User> getUser(long id) {
+        return getEntitiesByField("id", id, User.class);
     }
 }

@@ -12,8 +12,8 @@ import static dao.DAOManager.*;
  */
 public class ProductDAO {
 
-    public Product findProductByName(String name) {
-        return getEntity("product", "name", name, new Product());
+    public List<Product> findProductByName(String name) {
+        return getEntitiesByField("name", name, Product.class);
     }
 
     public Product createProduct(Product newProduct) {
@@ -21,19 +21,18 @@ public class ProductDAO {
     }
 
     public List<Product> getProducts() {
-        return getListOfEntities("product", new Product());
+        return getAllEntities(Product.class);
     }
 
     public void deleteProduct(long id) {
-        String sql = "DELETE FROM product where id = ?";
-        delete(id, sql);
+        deleteByField(Product.class, "id", id);
     }
 
     public Product updateProduct(Product updatedProduct) {
         return updateEntity(updatedProduct);
     }
 
-    public Product getProduct(long id) {
-        return getEntity("product", "id", id, new Product());
+    public List<Product> getProduct(long id) {
+        return getEntitiesByField("id", id, Product.class);
     }
 }

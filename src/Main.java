@@ -1,28 +1,30 @@
-import dao.ProductDAO;
-import model.Product;
+import dao.FactorDAO;
+import model.Factor;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
 
         System.out.println("Welcome to Shop");
-//        ProductDAO dao = new ProductDAO();
-//        System.out.println(dao.getProduct(1));
 
+        Factor newFactor = new Factor();
+        newFactor.setBasketId(11);
+        newFactor.setDelivery(1);
+        newFactor.setPrice(12_000_234);
+        newFactor.setUserId(1300);
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.of(2020, 12, 10, 13, 15, 30));
+        newFactor.setDate(timestamp.getTime());
 
-        Product newProduct = new Product();
-        newProduct.setId(7);
-        newProduct.setName("laptop");
-        newProduct.setDescription("asus");
-        newProduct.setPrice(150_000_000);
-        newProduct.setColorId(12);
-        newProduct.setDiscountId(3);
-        newProduct.setCount(15);
-        newProduct.setCategoryId(222);
-        newProduct.setCommentId(341);
+        FactorDAO dao = new FactorDAO();
+        dao.createFactor(newFactor);
 
-        ProductDAO dao = new ProductDAO();
-        System.out.println(dao.updateProduct(newProduct));
+        FactorDAO.getFactorsByRangeOfDates(
+                LocalDateTime.of(2020, 12, 10, 12, 25, 10),
+                LocalDateTime.of(2020, 12, 10, 13, 0, 0))
+                .forEach(System.out::println);
 
     }
 }

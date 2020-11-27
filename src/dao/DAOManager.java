@@ -33,13 +33,16 @@ public class DAOManager {
         return connection;
     }
 
-    public static void delete(long id, String sql) {
+    public static void deleteByField(Class<?> entity, String columnName, Object column) {
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "DELETE FROM " + tableName + " WHERE " + columnName + " = ?";
+
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setLong(1, id);
+            ps.setObject(1, column);
             if (ps.executeUpdate() == 0)
-                throw new SQLException("ID = " + id + " not found");
+                throw new SQLException(columnName.toUpperCase() + " = " + column + " not found");
 
         } catch (SQLException e) {
 
@@ -48,46 +51,49 @@ public class DAOManager {
     }
 
 
-    private static <T> T getEntityFromResultSet(T entity, ResultSet rs) throws SQLException {
-        // TODO: 11/21/20 change the name of table columns same as model fields.
-        // FIXME: 11/21/20 change all methods of DAO
+    private static <T> T getEntityFromResultSet(Class<T> entity, ResultSet rs) throws SQLException {
+        T result = null;
 
-        Class<?> obj = entity.getClass();
         try {
+            result = entity.getConstructor().newInstance();
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                 String fieldName = rs.getMetaData().getColumnName(i);
-                Field field = obj.getDeclaredField(fieldName); // For private fields
+                Field field = entity.getDeclaredField(fieldName); // For private fields
                 field.setAccessible(true);
-                field.set(entity, rs.getObject(i));
+                field.set(result, rs.getObject(i));
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
             e.printStackTrace();
         }
 
-        return entity;
+        return result;
     }
 
-    public static <T> T getEntity(String tableName, String columnName, Object columnValue, T entity) {
+    public static <T> List<T> getEntitiesByField(String columnName, Object columnValue, Class<T> entity) {
+        String tableName = entity.getSimpleName().toLowerCase();
         String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
-        T result = null;
+        List<T> results = new ArrayList<>();
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, columnValue);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next())
-                    result = getEntityFromResultSet(entity, rs);
+                while (rs.next()) {
+                    results.add(getEntityFromResultSet(entity, rs));
+                }
             }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
 
-        return result;
+        return results;
     }
 
-    public static <T> List<T> getListOfEntities(String tableName, T entity) {
+    public static <T> List<T> getAllEntities(Class<T> entity) {
+        String tableName = entity.getSimpleName().toLowerCase();
         String sql = "SELECT * FROM " + tableName;
         List<T> results = new ArrayList<>();
 
@@ -203,6 +209,30 @@ public class DAOManager {
         }
 
         return result;
+    }
+
+
+    public static <T> List<T> getEntitiesByRangeOfField(String columnName, Object from, Object to, Class<T> entity) {
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " BETWEEN ? AND ?";
+        List<T> results = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, from);
+            ps.setObject(2, to);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(getEntityFromResultSet(entity, rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return results;
     }
 
 
