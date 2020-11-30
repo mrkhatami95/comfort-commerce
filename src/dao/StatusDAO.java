@@ -21,7 +21,7 @@ public class StatusDAO {
 
     public Status createStatus(Status newStatus) {
         Status result = null;
-        String sql = "INSERT INTO shop.status (status) VALUES(?)";
+        String sql = "INSERT INTO status (status) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -40,14 +40,14 @@ public class StatusDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Status> listAllStatus() {
+    public List<Status> getStatuses() {
         List<Status> listStatus = new ArrayList<>();
 
         String sql = "SELECT * FROM status";
@@ -66,8 +66,8 @@ public class StatusDAO {
             return listStatus;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -94,8 +94,8 @@ public class StatusDAO {
                 result = updatedStatus;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -119,8 +119,8 @@ public class StatusDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return status;

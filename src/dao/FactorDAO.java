@@ -21,7 +21,7 @@ public class FactorDAO {
 
     public Factor createFactor(Factor newFactor) {
         Factor result = null;
-        String sql = "INSERT INTO shop.factor (basket_id, user_id, price, date, delivery) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO factor (basket_id, user_id, price, date, delivery) VALUES(?,?,?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -44,14 +44,14 @@ public class FactorDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Factor> listAllFactor() {
+    public List<Factor> getFactors() {
         List<Factor> listFactor = new ArrayList<>();
 
         String sql = "SELECT * FROM factor";
@@ -74,8 +74,8 @@ public class FactorDAO {
             return listFactor;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -106,8 +106,8 @@ public class FactorDAO {
                 result = updatedFactor;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -135,8 +135,8 @@ public class FactorDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return factor;

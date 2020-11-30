@@ -21,7 +21,7 @@ public class ColorDAO {
 
     public Color createColor(Color newColor) {
         Color result = null;
-        String sql = "INSERT INTO shop.color (color) VALUES(?)";
+        String sql = "INSERT INTO color (color) VALUES(?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -40,14 +40,14 @@ public class ColorDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Color> listAllColor() {
+    public List<Color> getColors() {
         List<Color> listColor = new ArrayList<>();
 
         String sql = "SELECT * FROM color";
@@ -66,8 +66,8 @@ public class ColorDAO {
             return listColor;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -94,8 +94,8 @@ public class ColorDAO {
                 result = updatedColor;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -119,8 +119,8 @@ public class ColorDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return color;

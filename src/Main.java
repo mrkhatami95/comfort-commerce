@@ -1,23 +1,28 @@
-import dao.AddressDAO;
-import dao.DAOManager;
-import model.Address;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import dao.ProductDAO;
+import model.Product;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Address address = new Address();
-        AddressDAO dao = new AddressDAO();
-        address.setAddress("OK then we succeed");
-        dao.createAddress(address);
-        //dao.deleteAddress(1);
-        System.out.println(dao.getAddress(1));
-        address.setAddress("OK then we succeed after update");
-        System.out.println(dao.updateAddress(address));
-        dao.listAllAddress().stream().forEach(System.out::println);
+        System.out.println("Welcome to Shop");
+//        ProductDAO dao = new ProductDAO();
+//        System.out.println(dao.getProduct(1));
+
+
+        Product newProduct = new Product();
+        newProduct.setId(7);
+        newProduct.setName("laptop");
+        newProduct.setDescription("asus");
+        newProduct.setPrice(150_000_000);
+        newProduct.setColorId(12);
+        newProduct.setDiscountId(3);
+        newProduct.setCount(15);
+        newProduct.setCategoryId(222);
+        newProduct.setCommentId(341);
+
+        ProductDAO dao = new ProductDAO();
+        System.out.println(dao.updateProduct(newProduct));
+
     }
 }

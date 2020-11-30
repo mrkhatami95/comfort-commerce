@@ -21,7 +21,7 @@ public class CategoryDAO {
 
     public Category createCategory(Category newCategory) {
         Category result = null;
-        String sql = "INSERT INTO shop.category (name, `desc`) VALUES(?,?)";
+        String sql = "INSERT INTO category (name, `desc`) VALUES(?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -41,14 +41,14 @@ public class CategoryDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Category> listAllCategory() {
+    public List<Category> getCategories() {
         List<Category> listCategory = new ArrayList<>();
 
         String sql = "SELECT * FROM category";
@@ -69,8 +69,8 @@ public class CategoryDAO {
             return listCategory;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+
+            System.err.println(e.getMessage());
             return null;
         }
 
@@ -86,7 +86,7 @@ public class CategoryDAO {
 
     public Category updateCategory(Category updatedCategory) {
         Category result = null;
-        String sql = "UPDATE category SET name = ?, desc = ? WHERE id = ?";
+        String sql = "UPDATE category SET name = ?, 'desc' = ? WHERE id = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -99,8 +99,8 @@ public class CategoryDAO {
                 result = updatedCategory;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -125,8 +125,8 @@ public class CategoryDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+
+            System.err.println(e.getMessage());
         }
 
         return category;

@@ -21,7 +21,7 @@ public class DiscountDAO {
 
     public Discount createDiscount(Discount newDiscount) {
         Discount result = null;
-        String sql = "INSERT INTO shop.discount (code, discount_value, is_used) VALUES(?,?,?)";
+        String sql = "INSERT INTO discount (code, discount_value, is_used) VALUES(?,?,?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -42,14 +42,14 @@ public class DiscountDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
     }
 
-    public List<Discount> listAllDiscount() {
+    public List<Discount> getDiscounts() {
         List<Discount> listDiscount = new ArrayList<>();
 
         String sql = "SELECT * FROM discount";
@@ -70,8 +70,8 @@ public class DiscountDAO {
             return listDiscount;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
             return null;
         }
 
@@ -100,8 +100,8 @@ public class DiscountDAO {
                 result = updatedDiscount;
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return result;
@@ -127,8 +127,8 @@ public class DiscountDAO {
             }
 
         } catch (SQLException e) {
-            for (Throwable t : e)
-                System.err.println(t.getMessage());
+            
+                System.err.println(e.getMessage());
         }
 
         return discount;
