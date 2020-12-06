@@ -17,7 +17,7 @@ public class CommentDAO {
     }
 
     public List<Comment> getComments() {
-        return getEntitiesByField(Comment.class, "", null);
+        return findAllEntitiesByField(Comment.class, "", null);
     }
 
     public void deleteComment(long id) {
@@ -29,6 +29,6 @@ public class CommentDAO {
     }
 
     public List<Comment> getComment(long id) {
-        return getEntitiesByField(Comment.class, "id", id);
+        return findAllEntitiesByField(Comment.class, "id", id);
     }
 }

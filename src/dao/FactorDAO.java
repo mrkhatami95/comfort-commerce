@@ -2,8 +2,6 @@ package dao;
 
 import model.Factor;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static dao.DAOManager.*;
@@ -19,15 +17,12 @@ public class FactorDAO {
      * @param endDate   exclude
      * @return a list of matching factors
      */
-    public static List<Factor> getFactorsByRangeOfDates(LocalDateTime startDate, LocalDateTime endDate) {
+    public static List<Factor> findFactorByDate(long startDate, long endDate) {
 
-        if (startDate.isAfter(endDate))
+        if (startDate > endDate)
             throw new IllegalArgumentException("startDate must be <= endDate");
 
-        long from = Timestamp.valueOf(startDate).getTime();
-        long to = Timestamp.valueOf(endDate).getTime();
-
-        return getEntitiesByRangeOfField("date", from, to, Factor.class);
+        return getEntitiesByRangeOfField(Factor.class, "date", startDate, endDate);
     }
 
     public Factor createFactor(Factor newFactor) {
@@ -35,7 +30,7 @@ public class FactorDAO {
     }
 
     public List<Factor> getFactors() {
-        return getEntitiesByField(Factor.class, "", null);
+        return findAllEntitiesByField(Factor.class, "", null);
     }
 
     public void deleteFactorById(long id) {
@@ -47,6 +42,6 @@ public class FactorDAO {
     }
 
     public List<Factor> getFactor(long id) {
-        return getEntitiesByField(Factor.class, "id", id);
+        return findAllEntitiesByField(Factor.class, "id", id);
     }
 }

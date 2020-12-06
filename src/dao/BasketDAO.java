@@ -17,7 +17,7 @@ public class BasketDAO {
     }
 
     public List<Basket> getBaskets() {
-        return getEntitiesByField(Basket.class, "", null);
+        return findAllEntitiesByField(Basket.class, "", null);
     }
 
     public void deleteBasket(long id) {
@@ -29,6 +29,6 @@ public class BasketDAO {
     }
 
     public List<Basket> getBasket(long id) {
-        return getEntitiesByField(Basket.class, "id", id);
+        return findAllEntitiesByField(Basket.class, "id", id);
     }
 }

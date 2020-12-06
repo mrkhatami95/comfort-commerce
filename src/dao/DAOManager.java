@@ -75,7 +75,7 @@ public class DAOManager {
         return result;
     }
 
-    public static <T> List<T> getEntitiesByField(Class<T> entity, String columnName, Object columnValue) {
+    public static <T> List<T> findAllEntitiesByField(Class<T> entity, String columnName, Object columnValue) {
         List<T> results = new ArrayList<>();
 
         String tableName = entity.getSimpleName().toLowerCase();
@@ -200,8 +200,7 @@ public class DAOManager {
     }
 
 
-    public static <
-            T> List<T> getEntitiesByRangeOfField(String columnName, Object from, Object to, Class<T> entity) {
+    public static <T> List<T> getEntitiesByRangeOfField(Class<T> entity, String columnName, Object from, Object to) {
         String tableName = entity.getSimpleName().toLowerCase();
         String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " BETWEEN ? AND ?";
         List<T> results = new ArrayList<>();

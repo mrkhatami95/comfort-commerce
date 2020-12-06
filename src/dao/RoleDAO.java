@@ -17,7 +17,7 @@ public class RoleDAO {
     }
 
     public List<Role> getRoles() {
-        return getEntitiesByField(Role.class, "", null);
+        return findAllEntitiesByField(Role.class, "", null);
     }
 
     public void deleteRole(long id) {
@@ -29,6 +29,6 @@ public class RoleDAO {
     }
 
     public List<Role> getRole(long id) {
-        return getEntitiesByField(Role.class, "id", id);
+        return findAllEntitiesByField(Role.class, "id", id);
     }
 }

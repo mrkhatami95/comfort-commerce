@@ -17,7 +17,7 @@ public class SuggestionDAO {
     }
 
     public List<Suggestion> getSuggestions() {
-        return getEntitiesByField(Suggestion.class, "", null);
+        return findAllEntitiesByField(Suggestion.class, "", null);
     }
 
     public void deleteSuggestion(long id) {
@@ -29,7 +29,7 @@ public class SuggestionDAO {
     }
 
     public List<Suggestion> getSuggestion(long id) {
-        return getEntitiesByField(Suggestion.class, "id", id);
+        return findAllEntitiesByField(Suggestion.class, "id", id);
     }
 
 }

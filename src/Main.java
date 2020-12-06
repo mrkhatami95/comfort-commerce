@@ -1,4 +1,3 @@
-import dao.DAOManager;
 import dao.FactorDAO;
 import model.Factor;
 
@@ -16,18 +15,18 @@ public class Main {
         newFactor.setDelivery(1);
         newFactor.setPrice(12_000_234);
         newFactor.setUserId(1300);
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.of(2020, 12, 10, 13, 15, 30));
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.of(2020, 12, 10, 13, 15, 40));
         newFactor.setDate(timestamp.getTime());
 
         FactorDAO dao = new FactorDAO();
         dao.createFactor(newFactor);
 
-//        FactorDAO.getFactorsByRangeOfDates(
-//                LocalDateTime.of(2020, 12, 10, 12, 25, 10),
-//                LocalDateTime.of(2020, 12, 10, 13, 0, 0))
-//                .forEach(System.out::println);
-        dao.getFactor(30).forEach(System.out::println);
-        dao.deleteFactorById(29);
+        FactorDAO.findFactorByDate(
+                Timestamp.valueOf("2020-12-10 13:15:35.0").getTime(),
+                Timestamp.valueOf("2020-12-10 13:15:45.0").getTime())
+                .forEach(System.out::println);
+        System.out.println("--------------");
         dao.getFactors().forEach(System.out::println);
+
     }
 }

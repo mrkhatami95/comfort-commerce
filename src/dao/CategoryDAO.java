@@ -17,7 +17,7 @@ public class CategoryDAO {
     }
 
     public List<Category> getCategories() {
-        return getEntitiesByField(Category.class, "", null);
+        return findAllEntitiesByField(Category.class, "", null);
     }
 
     public void deleteCategory(long id) {
@@ -30,7 +30,7 @@ public class CategoryDAO {
     }
 
     public List<Category> getCategory(long id) {
-        return getEntitiesByField(Category.class, "id", id);
+        return findAllEntitiesByField(Category.class, "id", id);
     }
 
 }

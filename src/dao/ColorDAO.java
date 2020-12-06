@@ -17,7 +17,7 @@ public class ColorDAO {
     }
 
     public List<Color> getColors() {
-        return getEntitiesByField(Color.class, "", null);
+        return findAllEntitiesByField(Color.class, "", null);
     }
 
     public void deleteColor(long id) {
@@ -29,6 +29,6 @@ public class ColorDAO {
     }
 
     public List<Color> getColor(long id) {
-        return getEntitiesByField(Color.class, "id", id);
+        return findAllEntitiesByField(Color.class, "id", id);
     }
 }
