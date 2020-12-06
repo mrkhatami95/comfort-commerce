@@ -6,16 +6,22 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class DAOManager {
 
-    public static Connection getConnection() {
+    private final static String DB_NAME = "shop";
+
+    public static Connection getConnection(String dbName) {
         Connection connection = null;
 
         try {
+            if (Objects.isNull(dbName) || dbName.length() == 0)
+                throw new SQLException("database not found!");
+
             String driver = "com.mysql.cj.jdbc.Driver";
-            String dbURL = "jdbc:mysql://localhost/shop";
+            String dbURL = "jdbc:mysql://localhost/" + dbName;
             String username = "root";
             String password = "pass";
 
@@ -33,71 +39,64 @@ public class DAOManager {
         return connection;
     }
 
-    public static void delete(long id, String sql) {
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    public static void deleteByField(Class<?> entity, String columnName, Object column) {
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "DELETE FROM " + tableName;
+        // check for delete by specific column or delete all
+        if (Objects.nonNull(columnName) && columnName.length() != 0)
+            sql += " WHERE " + columnName + " = ?";
 
-            ps.setLong(1, id);
-            if (ps.executeUpdate() == 0)
-                throw new SQLException("ID = " + id + " not found");
+        try (Connection conn = getConnection(DB_NAME);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (sql.contains("WHERE")) {
+                ps.setObject(1, column);
+                if (ps.executeUpdate() == 0)
+                    throw new SQLException(columnName.toUpperCase() + " = " + column + " not found");
+            } else if (ps.executeUpdate() == 0)
+                throw new SQLException("Not found!");
 
         } catch (SQLException e) {
-
             System.err.println(e.getMessage());
         }
     }
 
 
-    private static <T> T getEntityFromResultSet(T entity, ResultSet rs) throws SQLException {
-        // TODO: 11/21/20 change the name of table columns same as model fields.
-        // FIXME: 11/21/20 change all methods of DAO
-
-        Class<?> obj = entity.getClass();
-        try {
-            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                String fieldName = rs.getMetaData().getColumnName(i);
-                Field field = obj.getDeclaredField(fieldName); // For private fields
-                field.setAccessible(true);
-                field.set(entity, rs.getObject(i));
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return entity;
-    }
-
-    public static <T> T getEntity(String tableName, String columnName, Object columnValue, T entity) {
-        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+    private static <T> T getEntityFromResultSet(Class<T> entity, ResultSet rs) throws SQLException {
         T result = null;
 
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, columnValue);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next())
-                    result = getEntityFromResultSet(entity, rs);
+        try {
+            result = entity.getConstructor().newInstance();
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                String fieldName = rs.getMetaData().getColumnName(i);
+                Field field = entity.getDeclaredField(fieldName); // For private fields
+                field.setAccessible(true);
+                field.set(result, rs.getObject(i));
             }
 
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
+            e.printStackTrace();
         }
 
         return result;
     }
 
-    public static <T> List<T> getListOfEntities(String tableName, T entity) {
-        String sql = "SELECT * FROM " + tableName;
+    public static <T> List<T> findAllEntitiesByField(Class<T> entity, String columnName, Object columnValue) {
         List<T> results = new ArrayList<>();
 
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "SELECT * FROM " + tableName;
+        if (Objects.nonNull(columnName) && columnName.length() != 0)
+            sql += " WHERE " + columnName + " = ?";
 
-        try (Connection conn = getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-
-            while (rs.next()) {
-                results.add(getEntityFromResultSet(entity, rs));
+        try (Connection conn = getConnection(DB_NAME);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (sql.contains("WHERE")) {
+                ps.setObject(1, columnValue);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(getEntityFromResultSet(entity, rs));
+                }
             }
 
         } catch (SQLException e) {
@@ -140,7 +139,7 @@ public class DAOManager {
 
         Class<?> obj = entity.getClass();
         Field[] fields = entity.getClass().getDeclaredFields();
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             for (int i = 1; i < fields.length; i++) {
@@ -180,7 +179,7 @@ public class DAOManager {
         Class<?> obj = entity.getClass();
         Field[] fields = entity.getClass().getDeclaredFields();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (int i = 1; i < fields.length; i++) {
@@ -203,6 +202,30 @@ public class DAOManager {
         }
 
         return result;
+    }
+
+
+    public static <T> List<T> getEntitiesByRangeOfField(Class<T> entity, String columnName, Object from, Object to) {
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " BETWEEN ? AND ?";
+        List<T> results = new ArrayList<>();
+
+        try (Connection conn = getConnection(DB_NAME);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, from);
+            ps.setObject(2, to);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(getEntityFromResultSet(entity, rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return results;
     }
 
 

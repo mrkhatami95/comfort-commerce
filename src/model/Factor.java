@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
+
 /**
  * Created by MRK on 11/19/2020.
  */
@@ -19,6 +21,10 @@ public class Factor {
         this.price = price;
         this.date = date;
         this.delivery = delivery;
+    }
+
+    public Factor() {
+
     }
 
     public long getId() {
@@ -67,5 +73,17 @@ public class Factor {
 
     public void setDelivery(int delivery) {
         this.delivery = delivery;
+    }
+
+    @Override
+    public String toString() {
+        return "Factor{" +
+                "id=" + id +
+                ", basketId=" + basketId +
+                ", userId=" + userId +
+                ", price=" + price +
+                ", date=" + new Timestamp(date).toLocalDateTime() +
+                ", delivery=" + delivery +
+                '}';
     }
 }
