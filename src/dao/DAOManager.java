@@ -11,12 +11,17 @@ import java.util.StringJoiner;
 
 public class DAOManager {
 
-    public static Connection getConnection() {
+    private final static String DB_NAME = "shop";
+
+    public static Connection getConnection(String dbName) {
         Connection connection = null;
 
         try {
+            if (Objects.isNull(dbName) || dbName.length() == 0)
+                throw new SQLException("database not found!");
+
             String driver = "com.mysql.cj.jdbc.Driver";
-            String dbURL = "jdbc:mysql://localhost/shop";
+            String dbURL = "jdbc:mysql://localhost/" + dbName;
             String username = "root";
             String password = "pass";
 
@@ -41,7 +46,7 @@ public class DAOManager {
         if (Objects.nonNull(columnName) && columnName.length() != 0)
             sql += " WHERE " + columnName + " = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             if (sql.contains("WHERE")) {
                 ps.setObject(1, column);
@@ -83,7 +88,7 @@ public class DAOManager {
         if (Objects.nonNull(columnName) && columnName.length() != 0)
             sql += " WHERE " + columnName + " = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             if (sql.contains("WHERE")) {
                 ps.setObject(1, columnValue);
@@ -134,7 +139,7 @@ public class DAOManager {
 
         Class<?> obj = entity.getClass();
         Field[] fields = entity.getClass().getDeclaredFields();
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             for (int i = 1; i < fields.length; i++) {
@@ -174,7 +179,7 @@ public class DAOManager {
         Class<?> obj = entity.getClass();
         Field[] fields = entity.getClass().getDeclaredFields();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (int i = 1; i < fields.length; i++) {
@@ -205,7 +210,7 @@ public class DAOManager {
         String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " BETWEEN ? AND ?";
         List<T> results = new ArrayList<>();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = getConnection(DB_NAME);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, from);
             ps.setObject(2, to);
