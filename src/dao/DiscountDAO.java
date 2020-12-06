@@ -17,7 +17,7 @@ public class DiscountDAO {
     }
 
     public List<Discount> getDiscounts() {
-        return getAllEntities(Discount.class);
+        return getEntitiesByField(Discount.class, "", null);
     }
 
     public void deleteDiscount(long id) {
@@ -29,6 +29,6 @@ public class DiscountDAO {
     }
 
     public List<Discount> getDiscount(long id) {
-        return getEntitiesByField("id", id, Discount.class);
+        return getEntitiesByField(Discount.class, "id", id);
     }
 }

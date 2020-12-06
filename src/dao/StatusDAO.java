@@ -17,7 +17,7 @@ public class StatusDAO {
     }
 
     public List<Status> getStatuses() {
-        return getAllEntities(Status.class);
+        return getEntitiesByField(Status.class, "", null);
     }
 
     public void deleteStatus(int id) {
@@ -29,6 +29,6 @@ public class StatusDAO {
     }
 
     public List<Status> getStatus(int id) {
-        return getEntitiesByField("id", id, Status.class);
+        return getEntitiesByField(Status.class, "id", id);
     }
 }

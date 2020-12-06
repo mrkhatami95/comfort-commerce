@@ -35,7 +35,7 @@ public class FactorDAO {
     }
 
     public List<Factor> getFactors() {
-        return getAllEntities(Factor.class);
+        return getEntitiesByField(Factor.class, "", null);
     }
 
     public void deleteFactorById(long id) {
@@ -47,6 +47,6 @@ public class FactorDAO {
     }
 
     public List<Factor> getFactor(long id) {
-        return getEntitiesByField("id", id, Factor.class);
+        return getEntitiesByField(Factor.class, "id", id);
     }
 }

@@ -75,40 +75,23 @@ public class DAOManager {
         return result;
     }
 
-    public static <T> List<T> getEntitiesByField(String columnName, Object columnValue, Class<T> entity) {
-        String tableName = entity.getSimpleName().toLowerCase();
-        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+    public static <T> List<T> getEntitiesByField(Class<T> entity, String columnName, Object columnValue) {
         List<T> results = new ArrayList<>();
+
+        String tableName = entity.getSimpleName().toLowerCase();
+        String sql = "SELECT * FROM " + tableName;
+        if (Objects.nonNull(columnName) && columnName.length() != 0)
+            sql += " WHERE " + columnName + " = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, columnValue);
-
+            if (sql.contains("WHERE")) {
+                ps.setObject(1, columnValue);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(getEntityFromResultSet(entity, rs));
                 }
-            }
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return results;
-    }
-
-    public static <T> List<T> getAllEntities(Class<T> entity) {
-        String tableName = entity.getSimpleName().toLowerCase();
-        String sql = "SELECT * FROM " + tableName;
-        List<T> results = new ArrayList<>();
-
-
-        try (Connection conn = getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-
-            while (rs.next()) {
-                results.add(getEntityFromResultSet(entity, rs));
             }
 
         } catch (SQLException e) {

@@ -26,6 +26,7 @@ public class Main {
 //                LocalDateTime.of(2020, 12, 10, 12, 25, 10),
 //                LocalDateTime.of(2020, 12, 10, 13, 0, 0))
 //                .forEach(System.out::println);
+        dao.getFactor(30).forEach(System.out::println);
         dao.deleteFactorById(29);
         dao.getFactors().forEach(System.out::println);
     }

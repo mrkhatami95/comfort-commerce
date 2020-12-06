@@ -13,7 +13,7 @@ import static dao.DAOManager.*;
 public class UserDAO {
 
     public List<User> findUserByUsername(String username) {
-        return getEntitiesByField("username", username, User.class);
+        return getEntitiesByField(User.class, "username", username);
     }
 
     public User createUser(User newUser) {
@@ -21,7 +21,7 @@ public class UserDAO {
     }
 
     public List<User> getUsers() {
-        return getAllEntities(User.class);
+        return getEntitiesByField(User.class, "", null);
     }
 
     public void deleteUser(long id) {
@@ -33,6 +33,6 @@ public class UserDAO {
     }
 
     public List<User> getUser(long id) {
-        return getEntitiesByField("id", id, User.class);
+        return getEntitiesByField(User.class, "id", id);
     }
 }

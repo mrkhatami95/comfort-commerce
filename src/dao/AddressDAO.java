@@ -17,7 +17,7 @@ public class AddressDAO {
     }
 
     public List<Address> getAddresses() {
-        return getAllEntities(Address.class);
+        return getEntitiesByField(Address.class, "", null);
     }
 
     public void deleteAddress(long id) {
@@ -29,6 +29,6 @@ public class AddressDAO {
     }
 
     public List<Address> getAddress(long id) {
-        return getEntitiesByField("id", id, Address.class);
+        return getEntitiesByField(Address.class, "id", id);
     }
 }
