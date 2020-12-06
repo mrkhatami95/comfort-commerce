@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class DAOManager {
@@ -35,17 +36,21 @@ public class DAOManager {
 
     public static void deleteByField(Class<?> entity, String columnName, Object column) {
         String tableName = entity.getSimpleName().toLowerCase();
-        String sql = "DELETE FROM " + tableName + " WHERE " + columnName + " = ?";
+        String sql = "DELETE FROM " + tableName;
+        // check for delete by specific column or delete all
+        if (Objects.nonNull(columnName) && columnName.length() != 0)
+            sql += " WHERE " + columnName + " = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setObject(1, column);
-            if (ps.executeUpdate() == 0)
-                throw new SQLException(columnName.toUpperCase() + " = " + column + " not found");
+            if (sql.contains("WHERE")) {
+                ps.setObject(1, column);
+                if (ps.executeUpdate() == 0)
+                    throw new SQLException(columnName.toUpperCase() + " = " + column + " not found");
+            } else if (ps.executeUpdate() == 0)
+                throw new SQLException("Not found!");
 
         } catch (SQLException e) {
-
             System.err.println(e.getMessage());
         }
     }
@@ -212,7 +217,8 @@ public class DAOManager {
     }
 
 
-    public static <T> List<T> getEntitiesByRangeOfField(String columnName, Object from, Object to, Class<T> entity) {
+    public static <
+            T> List<T> getEntitiesByRangeOfField(String columnName, Object from, Object to, Class<T> entity) {
         String tableName = entity.getSimpleName().toLowerCase();
         String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " BETWEEN ? AND ?";
         List<T> results = new ArrayList<>();

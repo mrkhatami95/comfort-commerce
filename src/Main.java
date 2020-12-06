@@ -1,3 +1,4 @@
+import dao.DAOManager;
 import dao.FactorDAO;
 import model.Factor;
 
@@ -21,10 +22,11 @@ public class Main {
         FactorDAO dao = new FactorDAO();
         dao.createFactor(newFactor);
 
-        FactorDAO.getFactorsByRangeOfDates(
-                LocalDateTime.of(2020, 12, 10, 12, 25, 10),
-                LocalDateTime.of(2020, 12, 10, 13, 0, 0))
-                .forEach(System.out::println);
-
+//        FactorDAO.getFactorsByRangeOfDates(
+//                LocalDateTime.of(2020, 12, 10, 12, 25, 10),
+//                LocalDateTime.of(2020, 12, 10, 13, 0, 0))
+//                .forEach(System.out::println);
+        dao.deleteFactorById(29);
+        dao.getFactors().forEach(System.out::println);
     }
 }
